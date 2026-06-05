@@ -8,6 +8,48 @@ class FlightService extends CrudService {
         super(new FlightRepository());
     }
 
+    getAll = async (query) => {
+        let customFilter = {};
+        let sortFilter = [];
+        const endingTripTime = ' 23:59:00';
+        // trips=MUM-DEL
+        if (query.trips) {
+            [departureAirportId, arrivalAirportId] = query.trips.split('-');
+            customFilter.departureAirportId = departureAirportId;
+            customFilter.arrivalAirportId = arrivalAirportId;
+            // TODO: add a check that they are not same
+            if (departureAirportId == arrivalAirportId) {
+                throw new BadRequestError(
+                    'trip for same destination',
+                    'please check the trip destination and source',
+                );
+            }
+        }
+        if (query.price) {
+            [minPrice, maxPrice] = query.price.split('-');
+            customFilter.price = {
+                [Op.between]: [
+                    minPrice,
+                    maxPrice == undefined ? 20000 : maxPrice,
+                ],
+            };
+        }
+        if (query.travellers) {
+            customFilter.totalSeats = {
+                [Op.gte]: query.travellers,
+            };
+        }
+        if (query.tripDate) {
+            customFilter.departureTime = {
+                [Op.between]: [query.tripDate, query.tripDate + endingTripTime],
+            };
+        }
+        if (query.sort) {
+            const params = query.sort.split(',');
+            const sortFilters = params.map((param) => param.split('_'));
+            sortFilter = sortFilters;
+        }
+
         try {
             const flights = await this.repository.getAll({
                 filter: customFilter,
