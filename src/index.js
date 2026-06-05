@@ -5,6 +5,8 @@ const express = require('express');
 const v1Router = require('./routers/v1');
 const genericErrorHandler = require('./utils/genericErrorHandler');
 
+
+
 const app = express();
 
 app.use(express.json());
@@ -15,8 +17,13 @@ app.use('/api/v1', v1Router);
 
 app.use(genericErrorHandler);
 
+
+
+
 (async () => {
     try {
+
+        
         await connectDb();
 
         app.listen(serverConfig.PORT, () => {
