@@ -17,26 +17,12 @@ class CrudRepository {
             },
         });
 
-        // if (!response) {
-        //     throw new AppError(
-        //         'Not able to find the resource',
-        //         StatusCodes.NOT_FOUND
-        //     );
-        // }
-
         return response;
     }
 
     async get(data) {
-        console.log(data)
+        console.log(data);
         const response = await this.model.findByPk(data);
-
-        // if (!response) {
-        //     throw new AppError(
-        //         'Not able to find the resource',
-        //         StatusCodes.NOT_FOUND
-        //     );
-        // }
 
         return response;
     }
