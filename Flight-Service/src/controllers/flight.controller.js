@@ -17,6 +17,21 @@ class FlightController extends CrudController {
             });
         } catch (error) {}
     };
+
+    async updateRemainingSeats(req, res) {
+        try {
+            console.log(req.body);
+            const response = await this.flightService.updateRemainingSeats({
+                flighId: req.params.id,
+                seats: req.body.seats,
+                dec: req.body.dec,
+            });
+            return res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            ErrorResponse.error = error;
+            return res.status(error.statusCode).json(ErrorResponse);
+        }
+    }
 }
 
 module.exports = FlightController;

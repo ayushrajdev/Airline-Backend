@@ -6,6 +6,7 @@ const CrudService = require('./crud.service');
 class FlightService extends CrudService {
     constructor() {
         super(new FlightRepository());
+        this.flightRepository = new FlightRepository();
     }
 
     getAll = async (query) => {
@@ -60,6 +61,23 @@ class FlightService extends CrudService {
             throw error;
         }
     };
+
+    async updateRemainingSeats({ flighId, seats, dec }) {
+        try {
+            const response = await this.flightRepository.updateRemainingSeats({
+                flighId,
+                seats,
+                dec,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new AppError(
+                'Cannot update data of the flight',
+                StatusCodes.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
 }
 
 module.exports = FlightService;
