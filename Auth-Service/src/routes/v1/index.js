@@ -1,9 +1,9 @@
 const { Router } = require('express');
-const bookingRouter = require('./booking.route.js');
+const userRouter = require('./user.route.js');
 
 
 const v1Router = Router();
 
-v1Router.use('/auth', bookingRouter);
+v1Router.use('/users', userRouter);
 
 module.exports = v1Router;
