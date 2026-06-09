@@ -116,6 +116,16 @@ class BookingService extends CrudService {
             throw error;
         }
     }
+
+    async cancelOldBookings() {
+        try {
+            const time = new Date(Date.now() - 1000 * 300); // time 5 mins ago
+            const response = await this.bookingRepository.cancelOldBookings(time); 
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = BookingService;

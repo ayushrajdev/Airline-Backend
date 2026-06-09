@@ -1,11 +1,9 @@
 const serverConfig = require('./config/server.config');
-console.log(serverConfig)
-const connectDb  = require('./config/db.config');
+const connectDb = require('./config/db.config');
 const express = require('express');
 const v1Router = require('./routers/v1');
 const genericErrorHandler = require('./utils/genericErrorHandler');
-
-
+const scheduleCron = require('./lib/cron.lib.js');
 
 const app = express();
 
@@ -17,15 +15,10 @@ app.use('/api/v1', v1Router);
 
 app.use(genericErrorHandler);
 
-
-
-
 (async () => {
     try {
-
-        
         await connectDb();
-
+        scheduleCron()
         app.listen(serverConfig.PORT, () => {
             console.log(`Server running on port ${serverConfig.PORT}`);
             console.log('Database connected');
