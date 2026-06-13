@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.text());
 
 app.use('/api/v1', v1Router);
+app.use('/bookings-service/api/v1', v1Router);
 
 app.use(genericErrorHandler);
 
