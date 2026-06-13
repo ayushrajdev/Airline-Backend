@@ -2,28 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('User_Roles', {
+        await queryInterface.createTable('Tickets', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            userId: {
-                type: Sequelize.INTEGER,
+            subject: {
+                type: Sequelize.STRING,
                 allowNull: false,
-                references: {
-                    model: 'users',
-                    key: 'id',
-                },
             },
-            roleId: {
-                type: Sequelize.INTEGER,
+            content: {
+                type: Sequelize.STRING,
                 allowNull: false,
-                references: {
-                    model: 'roles',
-                    key: 'id',
-                },
+            },
+            recepientEmail: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            status: {
+                type: Sequelize.ENUM,
+                values: ['PENDING', 'SUCCESS', 'FAILED'],
+                defaultValue: 'PENDING',
             },
             createdAt: {
                 allowNull: false,
@@ -36,6 +37,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('User_Roles');
+        await queryInterface.dropTable('Tickets');
     },
 };
