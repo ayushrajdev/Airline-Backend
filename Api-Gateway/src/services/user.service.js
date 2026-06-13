@@ -1,10 +1,25 @@
 const UserRepository = require('../repositories/user.repository');
 const CrudService = require('./crud.service');
 const { Auth, Enums } = require('../utils/common');
+const RoleRepository = require('../repositories/role.repository');
 class UserService extends CrudService {
     constructor() {
         super(new UserRepository());
         this.userRepository = new UserRepository();
+        this.roleRepository = new RoleRepository();
+    }
+
+    async create(data) {
+        try {
+            const user = await this.userRepository.create(data);
+            const role = await this.roleRepository.getRoleByName(
+                Enums.USER_ROLES_ENUMS.CUSTOMER,
+            );
+            user.addRole(role);
+            return user;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async signin(data) {
