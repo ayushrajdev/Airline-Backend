@@ -8,7 +8,7 @@ class EmailService extends CrudService {
         this.ticketRepository = new TicketRepository();
     }
 
-    async sendMail({ from, html, subject, text, to }) {
+    static async sendMail({ from, html, subject, text, to }) {
         const response = await sendMail({ from, html, subject, text, to });
         return response;
     }

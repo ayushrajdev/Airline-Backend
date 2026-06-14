@@ -4,14 +4,13 @@ const express = require('express');
 const v1Router = require('./routers/v1');
 const genericErrorHandler = require('./utils/genericErrorHandler');
 const scheduleCron = require('./lib/cron.lib.js');
+const {
+    connectMessageQueue,
+    consumeMessage,
+} = require('./config/message-queue.config.js');
 
 const app = express();
 
-
-
-
-
-app.use(limiter)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.text());
@@ -23,7 +22,9 @@ app.use(genericErrorHandler);
 (async () => {
     try {
         await connectDb();
-        scheduleCron()
+        scheduleCron();
+        await connectMessageQueue();
+        await consumeMessage();
         app.listen(serverConfig.PORT, () => {
             console.log(`Server running on port ${serverConfig.PORT}`);
             console.log('Database connected');

@@ -2,6 +2,7 @@ const {
     getFlightDetails,
     updateRemainingSeatsOfFlight,
 } = require('../api/flight.api');
+const { sendMessage, publishMessage } = require('../config/message-queue.config');
 const BookingRepository = require('../repositories/booking.repository');
 const AppError = require('../utils/errors/app-error');
 const CrudService = require('./crud.service');
@@ -105,7 +106,7 @@ class BookingService extends CrudService {
                 data: { status: BOOKED },
                 transaction,
             });
-            Queue.sendData({
+            publishMessage({
                 recepientEmail: 'cs191297@gmail.com',
                 subject: 'Flight booked',
                 text: `Booking successfully done for the booking ${data.bookingId}`,

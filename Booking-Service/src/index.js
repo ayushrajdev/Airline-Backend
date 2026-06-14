@@ -4,6 +4,7 @@ const express = require('express');
 const v1Router = require('./routers/v1');
 const genericErrorHandler = require('./utils/genericErrorHandler');
 const scheduleCron = require('./lib/cron.lib.js');
+const connectMessageQueue = require('./config/message-queue.config.js');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(genericErrorHandler);
     try {
         await connectDb();
         scheduleCron()
+        connectMessageQueue()
         app.listen(serverConfig.PORT, () => {
             console.log(`Server running on port ${serverConfig.PORT}`);
             console.log('Database connected');
