@@ -8,25 +8,7 @@ class EmailController extends CrudController {
         this.emailService = new EmailService();
     }
 
-    async sendMail(req, res, next) {
-        const { from, html, subject, text, to } = req.body;
-        if (!to || !subject || (!text && !html)) {
-            return res.status(400).json({ error: 'Missing required fields.' });
-        }
 
-        try {
-            const response = this.emailService.sendMail({
-                from,
-                html,
-                subject,
-                text,
-                to,
-            });
-            return successResponse(res);
-        } catch (error) {
-            throw error;
-        }
-    }
 
     async getPendingTickets() {
         try {

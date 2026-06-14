@@ -16,19 +16,18 @@ async function connectMessageQueue() {
     // });
 }
 
-connectMessageQueue();
 
-async function consumeMessage() {
+async function consumeMessage() { 
     try {
         await channel.consume(queue, async (data) => {
-            const { recepientEmail, subject, text } = JSON.parse(data.content);
+            data = Buffer.from(data.content).toString();
+            const { recepientEmail, subject, text } = JSON.parse(data);
             await EmailService.sendMail({ subject, text, to: recepientEmail });
             channel.ack(data);
         });
     } catch (error) {
         console.log(error);
-        
     }
 }
 
-module.exports = {connectMessageQueue,consumeMessage};
+module.exports = { connectMessageQueue, consumeMessage };

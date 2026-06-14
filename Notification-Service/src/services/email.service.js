@@ -12,6 +12,7 @@ class EmailService extends CrudService {
         const response = await sendMail({ from, html, subject, text, to });
         return response;
     }
+    
     async createTicket(data) {
         const response = await this.ticketRepository.create({ data });
         return response;
