@@ -4,21 +4,12 @@ const express = require('express');
 const v1Router = require('./routers/v1');
 const genericErrorHandler = require('./utils/genericErrorHandler');
 const scheduleCron = require('./lib/cron.lib.js');
-const limiter = require('./config/rate-limitter.config.js');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const { flightsProxy } = require('./config/proxy.config.js');
 
 const app = express();
 
 
-const apiProxy = createProxyMiddleware({
-  target: 'http://www.example.org',
-  changeOrigin: true,
-});
 
 
-app.use("/flights-service",flightsProxy)
-app.use("/bookings-service",flightsProxy)
 
 app.use(limiter)
 app.use(express.json());
